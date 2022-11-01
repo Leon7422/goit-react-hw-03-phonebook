@@ -7,13 +7,22 @@ import { ContactList } from './ContactList/ContactList';
 
 export class Phonebook extends React.Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    ],
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem('contacts'))) {
+      const contacts = JSON.parse(localStorage.getItem('contacts'));
+      this.setState({ contacts });
+    }
+  }
+
+  componentDidUpdate(pP, pS) {
+    if (this.state.contacts !== pS.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   filterInputChange = e => {
     this.setState({ filter: e.currentTarget.value });
